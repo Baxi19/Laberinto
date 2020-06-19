@@ -4,12 +4,9 @@
 :-  dynamic conectado/2.
 :-  dynamic arco/2.
 
-conectado(X,Y).
-
-arco(X,Y):-
-    conectado(X,Y);
-    conectado(Y,X).
-
+conectado(X,Y):-
+    arco(X,Y);
+    arco(Y,X).
 
 % grafo en forma de matriz para el laberinto
 %
@@ -53,3 +50,26 @@ arco(31,25).
 arco(25,19).
 arco(32,fin).
 
+% 2) Hacer laberinto y montarlo en un grafo y imprimir la solucion y
+% cuando se encuentra la solucion, mostrarla ya que es solo una
+%
+
+ruta(Inicio,Fin, Resultado):-
+    ruta_temp(Inicio,Fin,[],Resultado).
+
+ruta_temp(Fin,Fin,Lista,Resultado):-
+    reverse([Fin|Lista],Resultado),
+    imprime_lista(Resultado).
+
+ruta_temp(Inicio, Fin, Vecinos, Resultado) :-
+    conectado(Inicio,Vecino),
+    not(member(Vecino, Vecinos)),
+    ruta_temp(Vecino,Fin, [Inicio|Vecinos], Resultado).
+
+
+imprime_lista([]).
+imprime_lista([X|Xs]):-
+    write(" -> "),
+    write(X),
+    nl,
+    imprime_lista(Xs).

@@ -50,3 +50,26 @@ arco(31,25).
 arco(25,19).
 arco(32,fin).
 
+% 2) Hacer laberinto y montarlo en un grafo y imprimir la solucion y
+% cuando se encuentra la solucion, mostrarla ya que es solo una
+%
+
+ruta(Inicio,Fin):-
+    ruta_temp(Inicio,Fin,[]).
+
+ruta_temp(Fin,Fin,Lista):-
+    reverse([Fin|Lista],Resultado),
+    imprime_lista(Resultado).
+
+ruta_temp(Inicio, Fin, Vecinos) :-
+    conectado(Inicio,Vecino),
+    not(member(Vecino, Vecinos)),
+    ruta_temp(Vecino,Fin, [Inicio|Vecinos]).
+
+
+imprime_lista([]).
+imprime_lista([X|Xs]):-
+    write(" -> "),
+    write(X),
+    nl,
+    imprime_lista(Xs).
